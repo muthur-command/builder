@@ -65,7 +65,7 @@ inputs:
     required: false
     default: ""
   image:
-    description: Full image name without tag (e.g., "ghcr.io/home-assistant/amd64-base")
+    description: Full image name without tag (e.g., "ghcr.io/muthur-command/amd64-mcio-supervisor" per P0 BRAND)
     required: true
   image-tags:
     description: Image tags, one per line
@@ -114,7 +114,7 @@ runs:
     - name: Verify cache image ${{ inputs.image }}:${{ inputs.cache-image-tag }}
       if: inputs.cosign == 'true'
       id: verify_cache
-      uses: home-assistant/builder/actions/cosign-verify@62a1597b84b3461abad9816d9cd92862a2b542c3 # 2026.03.2
+      uses: muthur-command/builder/actions/cosign-verify@mc
       with:
         image: ${{ inputs.image }}:${{ inputs.cache-image-tag }}
         cosign-identity: ${{ inputs.cosign-identity || env.DEFAULT_COSIGN_IDENTITY }}
@@ -125,7 +125,7 @@ runs:
 
     - name: Verify base image
       if: inputs.push == 'true' && inputs.cosign-base-verify != '' && inputs.cosign-base-identity != ''
-      uses: home-assistant/builder/actions/cosign-verify@62a1597b84b3461abad9816d9cd92862a2b542c3 # 2026.03.2
+      uses: muthur-command/builder/actions/cosign-verify@mc
       with:
         image: ${{ inputs.cosign-base-verify }}
         cosign-identity: ${{ inputs.cosign-base-identity }}
@@ -179,8 +179,8 @@ runs:
         } >> "$GITHUB_OUTPUT"
 
         labels=()
-        labels+=("io.hass.arch=${ARCH}")
-        labels+=("io.hass.version=${VERSION}")
+        labels+=("io.mcio.arch=${ARCH}")
+        labels+=("io.mcio.version=${VERSION}")
         labels+=("org.opencontainers.image.created=${build_date}")
         labels+=("org.opencontainers.image.source=https://github.com/${GITHUB_REPOSITORY}")
         labels+=("org.opencontainers.image.version=${VERSION}")

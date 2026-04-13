@@ -1,6 +1,5 @@
 template: |
-  > [!WARNING]
-  > Since 2026.03.0, the `home-assistant/builder` action is deprecated in favor of more efficient and flexible composable actions.  See the [builder repository](https://github.com/home-assistant/builder) for details.
+  Composable GitHub Actions for **MCOS** / **muthur-command** container builds (P0-aligned **`ghcr.io/muthur-command/`**, **`io.mcio.*`** labels). Details: repository **README.md**.
 
   ## What's Changed
 
