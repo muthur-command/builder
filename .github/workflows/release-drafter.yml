@@ -7,6 +7,11 @@ on:
       - master
       - mc
 
+# Default GITHUB_TOKEN is read-only in many repos; releases need write.
+permissions:
+  contents: write
+  pull-requests: read
+
 jobs:
   update_release_draft:
     runs-on: ubuntu-latest
@@ -51,14 +56,18 @@ jobs:
           fi
 
           version_tag="mc_${datepre}.${newpost}"
+          # Semver for release-drafter resolver ($NEXT_* templates); tag/name keep mc_ prefix
+          semver="${datepre}.${newpost}"
           echo "Current version: ${latest:-<no tags>}"
-          echo "New target version: $version_tag"
+          echo "New target version: $version_tag (semver for drafter: $semver)"
           echo "version=$version_tag" >> "$GITHUB_OUTPUT"
+          echo "semver=$semver" >> "$GITHUB_OUTPUT"
 
       - name: Run Release Drafter
         uses: release-drafter/release-drafter@139054aeaa9adc52ab36ddf67437541f039b88e2 # v7.1.1
         with:
           tag: ${{ steps.version.outputs.version }}
           name: ${{ steps.version.outputs.version }}
+          version: ${{ steps.version.outputs.semver }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
