@@ -20,23 +20,39 @@ jobs:
       - name: Find Next Version
         id: version
         run: |
+          set -eo pipefail
           declare -i newpost
-          latest=$(git describe --tags $(git rev-list --tags --max-count=1))
-          # Strip optional mc_ so bump logic works for both legacy tags (2026.04.0) and mc_2026.04.0
-          latest_normalized="${latest#mc_}"
-          latestpre=$(echo "$latest_normalized" | awk '{split($0,a,"."); print a[1] "." a[2]}')
           datepre=$(date --utc '+%Y.%m')
 
-          if [[ "$latestpre" == "$datepre" ]]; then
-              latestpost=$(echo "$latest_normalized" | awk '{split($0,a,"."); print a[3]}')
-              newpost=$latestpost+1
+          # No tags (or describe fails): first release is mc_YYYY.MM.0
+          latest=""
+          tag_sha=$(git rev-list --tags --max-count=1 2>/dev/null || true)
+          if [[ -n "$tag_sha" ]]; then
+            latest=$(git describe --tags --abbrev=0 "$tag_sha" 2>/dev/null) || latest=""
+          fi
+
+          # Strip optional mc_ so bump logic works for both legacy tags (2026.04.0) and mc_2026.04.0
+          if [[ -n "$latest" ]]; then
+            latest_normalized="${latest#mc_}"
+            latestpre=$(echo "$latest_normalized" | awk '{split($0,a,"."); print a[1] "." a[2]}')
           else
-              newpost=0
+            latest_normalized=""
+            latestpre=""
+          fi
+
+          if [[ -n "$latestpre" && "$latestpre" == "$datepre" ]]; then
+            latestpost=$(echo "$latest_normalized" | awk '{split($0,a,"."); print a[3]}')
+            if [[ -z "${latestpost}" ]] || ! [[ "${latestpost}" =~ ^[0-9]+$ ]]; then
+              latestpost=0
+            fi
+            newpost=$((latestpost + 1))
+          else
+            newpost=0
           fi
 
           version_tag="mc_${datepre}.${newpost}"
-          echo Current version:    $latest
-          echo New target version: $version_tag
+          echo "Current version: ${latest:-<no tags>}"
+          echo "New target version: $version_tag"
           echo "version=$version_tag" >> "$GITHUB_OUTPUT"
 
       - name: Run Release Drafter
