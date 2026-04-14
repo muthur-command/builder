@@ -65,7 +65,7 @@ inputs:
     required: false
     default: ""
   image:
-    description: Full image name without tag (e.g., "ghcr.io/muthur-command/amd64-mcio-supervisor" per P0 BRAND)
+    description: Full image name without tag (e.g., "ghcr.io/muthur-command/amd64-mcio-supervisor")
     required: true
   image-tags:
     description: Image tags, one per line

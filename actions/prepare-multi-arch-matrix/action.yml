@@ -6,7 +6,7 @@ inputs:
     description: Architectures to build (JSON array, e.g., '["amd64", "aarch64"]')
     required: true
   image-name:
-    description: Repository name segment without arch prefix (e.g., "mcio-supervisor", "muthurcommand"; MCOS P0 BRAND / ghcr.io/muthur-command/)
+    description: Repository name segment without arch prefix (e.g., "mcio-supervisor", "muthurcommand")
     required: true
   registry-prefix:
     description: Registry and namespace prefix (e.g., "ghcr.io/owner")

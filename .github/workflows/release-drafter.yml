@@ -3,8 +3,6 @@ name: Release Drafter
 on:
   push:
     branches:
-      - main
-      - master
       - mc
 
 # Default GITHUB_TOKEN is read-only in many repos; releases need write.
