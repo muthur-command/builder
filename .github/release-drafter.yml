@@ -1,6 +1,4 @@
 template: |
-  Composable GitHub Actions for **MCOS** / **muthur-command** container builds. Details: repository **README.md**.
-
   ## What's Changed
 
   $CHANGES
