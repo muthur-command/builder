@@ -51,7 +51,7 @@ runs:
       if: inputs.cosign == 'true'
       uses: sigstore/cosign-installer@cad07c2e89fa2edd6e2d7bab4c1aa38e53f76003 # v4.1.1
       with:
-        cosign-release: "v2.5.3"
+        cosign-release: "v3.0.5"
 
     - name: Create multi-arch manifest and sign it
       shell: bash
