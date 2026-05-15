@@ -116,7 +116,7 @@ runs:
     - name: Verify cache image ${{ inputs.image }}:${{ inputs.cache-image-tag }}
       if: inputs.cosign == 'true'
       id: verify_cache
-      uses: muthur-command/builder/actions/cosign-verify@2026.04.2
+      uses: muthur-command/builder/actions/cosign-verify@2026.05.0
       with:
         image: ${{ inputs.image }}:${{ inputs.cache-image-tag }}
         cosign-identity: ${{ inputs.cosign-identity || env.DEFAULT_COSIGN_IDENTITY }}
@@ -127,7 +127,7 @@ runs:
 
     - name: Verify base image
       if: inputs.push == 'true' && inputs.cosign-base-verify != '' && inputs.cosign-base-identity != ''
-      uses: muthur-command/builder/actions/cosign-verify@2026.04.2
+      uses: muthur-command/builder/actions/cosign-verify@2026.05.0
       with:
         image: ${{ inputs.cosign-base-verify }}
         cosign-identity: ${{ inputs.cosign-base-identity }}
