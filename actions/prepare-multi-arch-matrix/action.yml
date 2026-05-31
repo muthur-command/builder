@@ -1,12 +1,12 @@
 name: Prepare multi-arch build matrix
-description: Validate architectures and build a matrix with arch, runner OS, and full image name (P0 frozen pattern ghcr.io/<owner>/{arch}-<image-name>, e.g. amd64-mcio-supervisor)
+description: Validate architectures and build a matrix with arch, runner OS, and full image name (P0 frozen pattern ghcr.io/<owner>/{arch}-<image-name>, e.g. amd64-mcos-supervisor)
 
 inputs:
   architectures:
     description: Architectures to build (JSON array, e.g., '["amd64", "aarch64"]')
     required: true
   image-name:
-    description: Repository name segment without arch prefix (e.g., "mcio-supervisor", "muthurcommand")
+    description: Repository name segment without arch prefix (e.g., "mcos-supervisor", "muthurcommand")
     required: true
   registry-prefix:
     description: Registry and namespace prefix (e.g., "ghcr.io/owner")

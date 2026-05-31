@@ -21,7 +21,7 @@ inputs:
     required: false
     default: "true"
   image-name:
-    description: Multi-arch manifest repository name without per-arch prefix (e.g., "mcio-supervisor"; per-arch images must be {arch}-<image-name> on the same registry prefix)
+    description: Multi-arch manifest repository name without per-arch prefix (e.g., "mcos-supervisor"; per-arch images must be {arch}-<image-name> on the same registry prefix)
     required: true
   image-tags:
     description: Image tags, one per line (first tag is the primary tag used for per-arch image lookup)

@@ -65,7 +65,7 @@ inputs:
     required: false
     default: ""
   image:
-    description: Full image name without tag (e.g., "ghcr.io/muthur-command/amd64-mcio-supervisor")
+    description: Full image name without tag (e.g., "ghcr.io/muthur-command/amd64-mcos-supervisor")
     required: true
   image-tags:
     description: Image tags, one per line
@@ -181,8 +181,8 @@ runs:
         } >> "$GITHUB_OUTPUT"
 
         labels=()
-        labels+=("io.mcio.arch=${ARCH}")
-        labels+=("io.mcio.version=${VERSION}")
+        labels+=("io.mcos.arch=${ARCH}")
+        labels+=("io.mcos.version=${VERSION}")
         labels+=("org.opencontainers.image.created=${build_date}")
         labels+=("org.opencontainers.image.source=https://github.com/${GITHUB_REPOSITORY}")
         labels+=("org.opencontainers.image.version=${VERSION}")
