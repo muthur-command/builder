@@ -59,6 +59,26 @@ jobs:
           echo "New target version: $version_tag (Release Drafter version: $semver)"
           echo "version=$version_tag" >> "$GITHUB_OUTPUT"
           echo "semver=$semver" >> "$GITHUB_OUTPUT"
+          echo "latest_normalized=${latest_normalized}" >> "$GITHUB_OUTPUT"
+
+      - name: Bump internal builder action refs
+        id: bump
+        env:
+          NEW_VERSION: ${{ steps.version.outputs.version }}
+          OLD_VERSION: ${{ steps.version.outputs.latest_normalized }}
+        run: ./scripts/bump-internal-action-refs.sh
+
+      - name: Commit and push internal ref bump
+        id: bump_commit
+        if: steps.bump.outputs.changed == 'true'
+        run: |
+          set -eo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "chore: bump internal builder action refs to ${{ steps.version.outputs.version }}"
+          git push origin HEAD:mc
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
       - name: Run Release Drafter
         uses: release-drafter/release-drafter@693d20e7c1ce1a81d3a41962f85914253b518449 # v7.3.1
@@ -66,5 +86,7 @@ jobs:
           tag: ${{ steps.version.outputs.version }}
           name: ${{ steps.version.outputs.version }}
           version: ${{ steps.version.outputs.semver }}
+          # Tag the bump commit when refs were updated (github.sha is still the push that triggered this run).
+          commitish: ${{ steps.bump_commit.outputs.sha || github.sha }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
